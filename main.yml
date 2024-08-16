@@ -2,13 +2,13 @@
 - name: "Building toolkit"
   hosts: localhost
   connection: local
+  vars:
+    username: "{{ ansible_user_id }}"
   roles:
     - role: "roles/install-tools"
     - role: "roles/configure-tmux"
     - role: "roles/configure-vim"
     - role: "roles/configure-terminal"
     - role: "roles/install-vscode"
-      users:
-        - username: "{{ ansible_user_id }}"
           
 
