@@ -1,0 +1,8 @@
+---
+- name: "Download tools & scripts to ~/tools/"
+  get_url:
+    url: "{{ item }}"
+    dest: "/path/to/your/destination/folder/filename"
+    mode: '0644'
+  loop:
+      - ""

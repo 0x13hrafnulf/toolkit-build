@@ -1,0 +1,49 @@
+---
+- name: Ensure the directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/tools"
+    state: directory
+    mode: '0755'
+
+- name: "Installing useful github repos"
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.location }}"
+  loop:
+    - { repo: "https://github.com/Flangvik/SharpCollection", location: "{{ ansible_env.HOME }}/tools/SharpCollection" }
+    - { repo: "https://github.com/danielmiessler/SecLists", location: "{{ ansible_env.HOME }}/tools/SecLists" }
+
+- name: Create temporary build directory
+  ansible.builtin.tempfile:
+    state: directory
+  register: build_dir
+
+- name: "Copying python script to download github releases"
+  copy:
+    src: "files/githubdownload.py"
+    dest: "{{ build_dir.path }}/githubdownload.py"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Downloading github releases"
+  shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
+  loop:
+    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "{{ ansible_env.HOME }}/tools/chisel" }
+    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "{{ ansible_env.HOME }}/tools/chisel" }
+    #- { repo: "jpillora/chisel",  regex: "_darwin_amd64", location: "{{ ansible_env.HOME }}/tools/chisel", filename: "chisel_osx" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "{{ ansible_env.HOME }}/tools/peas" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "{{ ansible_env.HOME }}/tools/peas" }
+    - { repo: "WithSecureLabs/chainsaw",  regex: "chainsaw_all_", location: "{{ ansible_env.HOME }}/tools/" }
+    - { repo: "nicocha30/ligolo-ng", regex: "_linux_amd64.tar.gz", location: "{{ ansible_env.HOME }}/tools/ligolo" }
+    - { repo: "nicocha30/ligolo-ng", regex: "_windows_amd64.zip", location: "{{ ansible_env.HOME }}/tools/ligolo" }
+  async: 45
+  poll: 0
+
+- name: Remove temporary build directory
+  ansible.builtin.file:
+    path: "{{ build_dir.path }}"
+    state: absent
+  when: build_dir.path is defined
+
+

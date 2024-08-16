@@ -1,0 +1,25 @@
+---
+- name: Ensure the directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/tools"
+    state: directory
+    mode: '0755'
+
+- name: Ensure the directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/tools/BloodHound"
+    state: directory
+    mode: '0755'
+
+- name: Download docker-compose.yml to a specific folder
+  get_url:
+    url: "https://raw.githubusercontent.com/SpecterOps/bloodhound/main/examples/docker-compose/docker-compose.yml"
+    dest: "{{ ansible_env.HOME }}/tools/BloodHound"
+    mode: '0644'
+
+- name: Build Docker images from the downloaded docker-compose.yml
+  shell: docker compose -f {{ ansible_env.HOME }}/tools/BloodHound/docker-compose.yml build
+  args:
+    chdir: {{ ansible_env.HOME }}/tools/BloodHound
+
+  
