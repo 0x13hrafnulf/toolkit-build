@@ -5,14 +5,6 @@
     state: directory
     mode: '0755'
 
-- name: "Installing useful github repos"
-  git:
-    repo: "{{ item.repo }}"
-    dest: "{{ item.location }}"
-  loop:
-    - { repo: "https://github.com/Flangvik/SharpCollection", location: "{{ ansible_env.HOME }}/tools/SharpCollection" }
-    - { repo: "https://github.com/danielmiessler/SecLists", location: "{{ ansible_env.HOME }}/tools/SecLists" }
-
 - name: Create temporary build directory
   ansible.builtin.tempfile:
     state: directory
@@ -22,8 +14,6 @@
   copy:
     src: "files/githubdownload.py"
     dest: "{{ build_dir.path }}/githubdownload.py"
-    owner: root
-    group: root
     mode: 0755
 
 - name: "Downloading github releases"
@@ -35,8 +25,6 @@
     - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "{{ ansible_env.HOME }}/tools/peas" }
     - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "{{ ansible_env.HOME }}/tools/peas" }
     - { repo: "WithSecureLabs/chainsaw",  regex: "chainsaw_all_", location: "{{ ansible_env.HOME }}/tools/" }
-    - { repo: "nicocha30/ligolo-ng", regex: "_linux_amd64.tar.gz", location: "{{ ansible_env.HOME }}/tools/ligolo" }
-    - { repo: "nicocha30/ligolo-ng", regex: "_windows_amd64.zip", location: "{{ ansible_env.HOME }}/tools/ligolo" }
   async: 45
   poll: 0
 
@@ -46,4 +34,16 @@
     state: absent
   when: build_dir.path is defined
 
+# Might take a while to run
+# Better to install them manually
+# Just: git clone https://github.com/Flangvik/SharpCollection
+#       apt install seclists
+# - name: "Installing useful github repos"
+#   git:
+#     repo: "{{ item.repo }}"
+#     dest: "{{ item.location }}"
+#   loop:
+#     - { repo: "https://github.com/Flangvik/SharpCollection", location: "{{ ansible_env.HOME }}/tools/SharpCollection" }
+#     - { repo: "https://github.com/danielmiessler/SecLists", location: "{{ ansible_env.HOME }}/tools/SecLists" }
 
+# Curl ligolo and extract??
