@@ -19,5 +19,6 @@
       - ntpdate
       - exiftool
       - golang
+      - gobuster
   become: true
   become_method: sudo
