@@ -6,7 +6,7 @@ set number
 filetype on
 set tabstop=4
 set shiftwidth=4
-set expandtab
+set list
 
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
