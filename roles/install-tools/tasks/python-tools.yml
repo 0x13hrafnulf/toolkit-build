@@ -8,3 +8,27 @@
     - { name: 'impacket', url: 'git+https://github.com/fortra/impacket.git' }
     - { name: 'NetExec', url: 'git+https://github.com/Pennyw0rth/NetExec' }
     - { name: 'certipy-ad', url: 'git+https://github.com/ly4k/Certipy.git' }
+
+- name: Download get-pip.py for Python 2
+  get_url:
+    url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+    dest: /tmp/get-pip.py
+    mode: '0755'
+
+- name: Install pip using get-pip.py with Python 2
+  command: python2 /tmp/get-pip.py
+  args:
+    creates: /usr/local/bin/pip2
+
+- name: Remove get-pip.py script after installation
+  file:
+    path: /tmp/get-pip.py
+    state: absent
+
+- name: Ensure $HOME/go/bin and $HOME/.local/bin are in the PATH in ~/.zshrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    insertafter: EOF
+    line: 'export PATH="$HOME/go/bin:$HOME/.local/bin:$PATH"'
+    state: present
+  become: false
