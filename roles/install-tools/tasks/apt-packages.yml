@@ -19,6 +19,8 @@
       - ntpdate
       - exiftool
       - golang
-      - gobuster
+      - bloodhound
+      - sshuttle
+      - seclists
   become: true
   become_method: sudo

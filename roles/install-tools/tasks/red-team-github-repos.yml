@@ -1,7 +1,7 @@
 ---
 - name: Ensure the directory exists
   file:
-    path: "{{ ansible_env.HOME }}/tools"
+    path: "{{ ansible_env.HOME }}/tools/red-team"
     state: directory
     mode: '0755'
 
@@ -19,12 +19,13 @@
 - name: "Downloading github releases"
   shell: "{{ build_dir.path }}/githubdownload.py {{ item.repo }} {{ item.regex }} {{ item.location }} {% if item.filename is defined %}{{ item.filename }}{% endif %}"
   loop:
-    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "{{ ansible_env.HOME }}/tools/chisel" }
-    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "{{ ansible_env.HOME }}/tools/chisel" }
-    #- { repo: "jpillora/chisel",  regex: "_darwin_amd64", location: "{{ ansible_env.HOME }}/tools/chisel", filename: "chisel_osx" }
-    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "{{ ansible_env.HOME }}/tools/peas" }
-    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "{{ ansible_env.HOME }}/tools/peas" }
-    - { repo: "WithSecureLabs/chainsaw",  regex: "chainsaw_all_", location: "{{ ansible_env.HOME }}/tools/" }
+    - { repo: "jpillora/chisel",  regex: "_linux_amd64.gz", location: "{{ ansible_env.HOME }}/tools/red-team/chisel" }
+    - { repo: "jpillora/chisel",  regex: "_windows_amd64.gz", location: "{{ ansible_env.HOME }}/tools/red-team/chisel" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "linpeas.sh", location: "{{ ansible_env.HOME }}/tools/red-team/peas" }
+    - { repo: "carlospolop/PEASS-ng",  regex: "winPEASx64.exe", location: "{{ ansible_env.HOME }}/tools/red-team/peas" }
+    - { repo: "nicocha30/ligolo-ng",  regex: "ligolo-ng_proxy_*_linux_amd64.tar.gz", location: "{{ ansible_env.HOME }}/tools/red-team/ligolo" }
+    - { repo: "nicocha30/ligolo-ng",  regex: "ligolo-ng_agent_*_linux_amd64.tar.gz", location: "{{ ansible_env.HOME }}/tools/red-team/ligolo" }
+    - { repo: "nicocha30/ligolo-ng",  regex: "ligolo-ng_agent_*_windows_amd64.zip", location: "{{ ansible_env.HOME }}/tools/red-team/ligolo" }
   async: 45
   poll: 0
 

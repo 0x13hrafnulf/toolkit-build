@@ -1,13 +1,13 @@
 ---
 - name: Ensure the directory exists
   file:
-    path: "{{ ansible_env.HOME }}/tools"
+    path: "{{ ansible_env.HOME }}/tools/red-team/"
     state: directory
     mode: '0755'
 
 - name: Ensure the directory exists
   file:
-    path: "{{ ansible_env.HOME }}/tools/BloodHound"
+    path: "{{ ansible_env.HOME }}/tools/red-team/BloodHound"
     state: directory
     mode: '0755'
 

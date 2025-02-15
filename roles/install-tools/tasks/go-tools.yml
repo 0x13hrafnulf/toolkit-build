@@ -1,0 +1,10 @@
+---
+- name: "install Kerbrute"
+  shell: go install github.com/ropnop/kerbrute@master
+- name: "install Ffuf"
+  shell: go install github.com/ffuf/ffuf/v2@latest
+- name: "install Gobuster"
+  shell: go install github.com/OJ/gobuster/v3@latest
+- name: "install ruler"
+  shell: go install https://github.com/sensepost/ruler@master
+  
